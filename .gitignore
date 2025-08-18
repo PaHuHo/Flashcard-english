@@ -1,0 +1,62 @@
+# ---------------------
+# Node.js dependencies
+# ---------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------------------
+# Build outputs
+# ---------------------
+dist/
+build/
+out/
+
+# Client (React build output)
+client/build/
+
+# Server (Express build output)
+server/dist/
+
+# ---------------------
+# TypeScript cache
+# ---------------------
+*.tsbuildinfo
+
+# ---------------------
+# Logs
+# ---------------------
+*.log
+
+# ---------------------
+# Environment variables
+# ---------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ---------------------
+# Coverage / Testing
+# ---------------------
+coverage/
+*.lcov
+
+# ---------------------
+# Editor / System files
+# ---------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---------------------
+# Optional: lock files (chỉ ignore nếu bạn không muốn push lockfile)
+# ---------------------
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
