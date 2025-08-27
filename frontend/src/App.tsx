@@ -1,8 +1,8 @@
-import LoginPage from "./pages/LoginPage";
+import RouteApp from './routes/Routes'
 
 function App() {
   return (
-    <LoginPage></LoginPage>
+    <RouteApp></RouteApp>
   )
 }
 

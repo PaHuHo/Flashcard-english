@@ -3,10 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model';
 
-export const test = (req: Request, res: Response) => {
-  res.json({ message: 'Auth Controller OK' });
-};
-
 export const login = async (req: Request, res: Response) => {
   const jwt_secret = process.env.JWT_SECRET as string;
   console.log("JWT_SECRET =", jwt_secret);
@@ -21,13 +17,19 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       jwt_secret,
-      { expiresIn: '1h' }
+      { expiresIn: '8h' }
     );
     console.log(token)
 
     return res.status(201).json({
       token: token,
-      message: "Login Success"
+      message: "Login Success",
+      user: {
+        id:user._id,
+        email:user.email,
+        username:user.username,
+        role:user.role
+      }
     });
   } catch (err) {
     console.error("JWT sign error:", err);
@@ -56,11 +58,4 @@ export const register = async (req: Request, res: Response) => {
     message: "Register successfully",
 
   });
-};
-
-export const me = (req: Request, res: Response) => {
-  const user = User.findById(req.body.id)
-  if (!user) return res.status(404).json({ message: 'User not found' });
-
-  return res.json(user);
 };

@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { test, register, login } from '../controllers/auth.controller';
+import { register, login } from '../controllers/auth.controller';
+import { show,create, update, remove } from '../controllers/topic.controller';
 import {verifyToken} from '../middleware/auth.middleware'
 const router = Router();
 
@@ -9,9 +10,14 @@ router.post('/login', login);
 //API register
 router.post('/register', register);
 
-//API get user login
-router.get('/me',verifyToken, register);
+//API update user login
+router.post('/user/update',verifyToken, register);
 
-//API CRUD
+//API CRUD Topic
+router.get('/topic/show',verifyToken, show);
+router.get('/topic/detail',verifyToken, show);
+router.post('/topic/create',verifyToken, create);
+router.post('/topic/update',verifyToken, update);
+router.post('/topic/delete',verifyToken, remove);
 
 export default router;

@@ -1,15 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-*{
-    margin: 0;
+/* *{
+    margin: 10px;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
-}
+} */
 
-body{
+#login_body{
     background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background: linear-gradient(to right, #e2e2e2, #bbc7f0);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,7 +58,7 @@ body{
     cursor: pointer;
 }
 
-.container button.hidden{
+.container button.hiddenbtn{
     background-color: transparent;
     border-color: #fff;
 }
@@ -76,7 +74,7 @@ body{
 }
 
 .container input{
-    background-color: #eee;
+    background-color: #eeeeee;
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
