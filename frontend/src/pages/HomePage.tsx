@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAuthStore } from "../stores/auth";
-import { useNavigate } from "react-router-dom";
 import Stepper, { Step } from "../components/Stepper/Stepper";
 import { useState } from "react";
 import { useFetchData } from "../stores/fetchData";
@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import TopicCard from "../components/TopicCard/TopicCard";
 import ElectricBorder from "../components/ElectricBorder/ElectricBorder";
-import NavBar from "../components/NavBar/NavBar"
+import EmptyData from "../components/EmptyData/EmptyData";
 
 type TopicForm = {
   name: string;
@@ -17,8 +17,7 @@ type TopicForm = {
 };
 
 function HomePage() {
-  const { user} = useAuthStore();
-  const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [openForm, setOpenForm] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(0);
@@ -32,11 +31,9 @@ function HomePage() {
     fetchData: fetchAllTopics,
   } = useFetchData<any>("/topic/show");
 
-  const {
-    result: userTopics,
-    loading: loadingUser,
-    fetchData: fetchUserTopics,
-  } = useFetchData<any>(`/topic/show?userId=${user?.id}`);
+  const { result: userTopics, fetchData: fetchUserTopics } = useFetchData<any>(
+    `/topic/show?user_id=${user?.id}`
+  );
 
   const handleFinalSubmit = async (data: TopicForm) => {
     const finalData = {
@@ -44,7 +41,9 @@ function HomePage() {
       user_id: user?.id,
     };
     const res = await URL_API.post("/topic/create", finalData);
-    toast.success(res.data.message);
+    if (res.status == 201) {
+      toast.success(res.data.message);
+    }
     // reset lại form & đóng Stepper
     topicDataForm.reset();
     setOpenForm(false);
@@ -53,12 +52,8 @@ function HomePage() {
     fetchUserTopics();
     fetchAllTopics();
   };
-
-  console.log(allTopics)
   return (
     <>
-     <NavBar></NavBar>
-
       <ElectricBorder
         color="#ffcc23ff"
         speed={0.3}
@@ -81,37 +76,47 @@ function HomePage() {
             <i className="fa-solid fa-plus"></i> New topic
           </button>
         </div>
-
-        <div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
-          {userTopics?.data.map((topic: any) => (
+        {userTopics?.length>0?(<div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
+         
+          {userTopics?.map((topic: any) => (
             <TopicCard
               id={topic._id}
               name={topic.name}
               description={topic.description}
-              totalCard="13"
+              totalCard={topic.flashcardCount}
               username={topic.user_id.username || ""}
             ></TopicCard>
           ))}
-        </div>
+        </div>):(<EmptyData
+            title="Empty Flashcard"
+            showButton={false}
+          ></EmptyData>)}
+        
       </ElectricBorder>
 
       <ElectricBorder
-      color="#09a5ffff" style={{ borderRadius: 16, margin: 10, padding: 15 }}>
-        <div >
+        color="#09a5ffff"
+        style={{ borderRadius: 16, margin: 10, padding: 15 }}
+      >
+        <div>
           <span className="text-[20px] font-semibold tracking-wide ml-[10px]">
-             Topic
+            Topic
           </span>
-          <div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
-            {allTopics?.data.map((topic: any) => (
+          {allTopics?.length>0?(<div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
+            {allTopics?.map((topic: any) => (
               <TopicCard
                 id={topic._id}
                 name={topic.name}
                 description={topic.description}
-                totalCard="13"
+                totalCard={topic.flashcardCount}
                 username={topic.user_id.username || ""}
               ></TopicCard>
             ))}
-          </div>
+          </div>):(<EmptyData
+            title="Empty Flashcard"
+            showButton={false}
+          ></EmptyData>)}
+          
         </div>
       </ElectricBorder>
 
@@ -161,22 +166,25 @@ function HomePage() {
             setCurrentStep(1);
           }}
         ></div>
-        <form onSubmit={topicDataForm.handleSubmit(handleFinalSubmit)}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <Stepper
             className="relative z-10 rounded-4xl shadow-xl bg-white"
             onInit={(steps) => setTotalSteps(steps)}
             nextButtonProps={{
-              type: currentStep === totalSteps ? "submit" : "button",
+              type: "button",
               disabled:
                 currentStep === totalSteps && !topicDataForm.formState.isValid,
             }}
+            onFinalStepCompleted={() =>
+              topicDataForm.handleSubmit(handleFinalSubmit)()
+            }
             key={openForm ? "form-open" : "form-closed"}
-            initialStep={currentStep}
+            initialStep={1}
             onStepChange={(step) => {
               setCurrentStep(step);
             }}
             backButtonText="Previous"
-            nextButtonText={currentStep === totalSteps ? "Finish1" : "Next"}
+            nextButtonText={currentStep === totalSteps ? "Finish" : "Next"}
           >
             <Step>
               <h2>New topic</h2>

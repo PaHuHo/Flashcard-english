@@ -39,9 +39,7 @@ export const login = async (req: Request, res: Response) => {
 
 
 export const register = async (req: Request, res: Response) => {
-  //  console.log('Received request param:', req.params.id);
-  //  console.log('Received request query:', req.query.username);
-  //  console.log('Received request body:', req.body.username);
+  
   const existingUser = await User.findOne({ email: req.body.email });
   if (existingUser) {
     return res.status(400).json({ message: 'Email already exists' });

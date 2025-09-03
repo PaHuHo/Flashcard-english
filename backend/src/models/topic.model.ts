@@ -4,7 +4,7 @@ export interface ITopic extends mongoose.Document {
   name: string;
   description: string;
   visibility: string;
-  user_id:string;
+  user_id:Types.ObjectId;
   isActive:number;
   createdAt: Date;
 }

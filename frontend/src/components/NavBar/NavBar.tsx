@@ -13,9 +13,9 @@ function NavBar() {
           </h2>
 
           <div className="flex items-center space-x-10 text-white">
-            <span>Hello, {user?.username}</span>
+            <button onClick={()=>navigate('/')}>Home</button>
             <div>Collection</div>
-            <button onClick={() => navigate("/user")}>User</button>
+            <button onClick={() => navigate("/user")}>{user?.username}</button>
             <button onClick={logout}>Logout</button>
           </div>
         </div>

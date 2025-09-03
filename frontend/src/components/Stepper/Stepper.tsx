@@ -42,7 +42,7 @@ export default function Stepper({
   contentClassName = "",
   footerClassName = "",
   backButtonProps = {},
-  nextButtonProps = {type: "button"} ,
+  nextButtonProps = { type: "button" },
   backButtonText = "Back",
   nextButtonText = "Continue",
   disableStepIndicators = false,
@@ -56,7 +56,7 @@ export default function Stepper({
   const isCompleted = currentStep > totalSteps;
   const isLastStep = currentStep === totalSteps;
 
-    useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (onInit) {
       onInit(totalSteps);
     }
@@ -95,7 +95,6 @@ export default function Stepper({
       className="flex min-h-full flex-1 flex-col items-center justify-center p-4 sm:aspect-[4/3] md:aspect-[2/1]"
       {...rest}
     >
-     
       <div
         className={`mx-auto w-full max-w-md rounded-4xl shadow-xl ${stepCircleContainerClassName}`}
         style={{ border: "1px solid #222" }}
@@ -200,8 +199,14 @@ function StepContentWrapper({
   return (
     <motion.div
       style={{ position: "relative", overflow: "hidden" }}
-      animate={{ height: isCompleted ? 0 : parentHeight }}
-      transition={{ type: "spring", duration: 0.4 }}
+      animate={{
+        height: isCompleted ? 0 : parentHeight,
+        backgroundColor: "#ffffffff",
+        opacity: 1
+      }}
+      initial={{ backgroundColor: "rgba(255, 255, 255, 1)" }}
+      transition={{ type: "spring", duration: 0.3 }}
+      
       className={className}
     >
       <AnimatePresence initial={false} mode="sync" custom={direction}>
@@ -294,8 +299,8 @@ function StepIndicator({
     currentStep === step
       ? "active"
       : currentStep < step
-        ? "inactive"
-        : "complete";
+      ? "inactive"
+      : "complete";
 
   const handleClick = () => {
     if (step !== currentStep && !disableStepIndicators) {

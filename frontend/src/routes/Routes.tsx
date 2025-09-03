@@ -4,22 +4,21 @@ import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import TopicPage from "../pages/TopicPage";
 import NoFoundPage from "../pages/NoFoundPage";
+import Layout from "../pages/LayoutPage";
 
 function AppRoutes() {
   return (
     <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/topic/:id" element={<TopicPage />} />
-        <Route path="*" element={<NoFoundPage />} />
-      </Routes>
+      <Route path="/" element={<ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>}>
+        <Route index element={<HomePage />} />
+        <Route path="topic/:id" element={<TopicPage />} />
+      </Route>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="*" element={<NoFoundPage />} />
+    </Routes>
+    
   );
 }
 

@@ -40,7 +40,7 @@ export const useAuthStore = create<AuthState>()(
           } else {
             set({ token: null, user: null }); // token hết hạn rồi thì logout ngay
           }
-
+          console.log(token)
           set({ token, user });
         } catch (err) {
           console.error("Invalid token", err);
