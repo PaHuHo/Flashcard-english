@@ -17,7 +17,7 @@ function TopicCard({
   const navigate = useNavigate();
   
   const goToTopicPage=()=>{
-    navigate(`/topic/${id}`)
+    navigate(`/topic/detail/${id}`)
   }
   return (
     <>

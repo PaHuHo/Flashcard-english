@@ -1,39 +1,35 @@
-import { useEffect, useState, useCallback  } from "react";
+import { useEffect, useState, useCallback } from "react";
 import URL_API from "./api";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useFetchData<T>(url: string,data?:any) {
+export function useFetchData<T>(url: string, initialParams: any = {}) {
   const [result, setResult] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      let res;
+  const [params, setParams] = useState(initialParams);
 
-      if (data) {
-        // Nếu muốn gửi theo body (POST)
-        res = await URL_API.get(url, data);
+  const fetchData = useCallback(
+    async (overrideParams?: any) => {
+      try {
+        setLoading(true);
+        setError(null);
 
-        // Nếu muốn gửi dạng query params thì đổi thành:
-        // res = await URL_API.get(url, { params: data });
-      } else {
-        res = await URL_API.get(url);
+        const queryParams = overrideParams ?? params;
+
+        const res = await URL_API.get(url, { params: queryParams });
+        setResult(res.data.data);
+      } catch (err: any) {
+        setError(err.message || "Có lỗi xảy ra");
+      } finally {
+        setLoading(false);
       }
-      
-      setResult(res.data.data);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(err.message || "Có lỗi xảy ra");
-    } finally {
-      setLoading(false);
-    }
-  }, [url,data]);
+    },
+    [url, params]
+  );
+
   useEffect(() => {
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+  }, [fetchData]);
 
-  return { result, loading, error, fetchData };
+  return { result, loading, error, fetchData, setParams };
 }

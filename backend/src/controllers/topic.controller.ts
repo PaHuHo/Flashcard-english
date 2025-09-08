@@ -5,7 +5,7 @@ import { Types } from "mongoose";
 export const showTopic = async (req: Request, res: Response) => {
 
     let match: any = { isActive: 1 };
-    
+    console.log(req.query.status)
     if (req.query.user_id) {
         match.user_id = new Types.ObjectId(req.query.user_id as string);
     } else {
@@ -24,7 +24,7 @@ export const showTopic = async (req: Request, res: Response) => {
                 foreignField: "topic_id",
                 as: "flashcards",
                 pipeline: [
-                    { $match: { status: "approve" } } // lọc flashcard bên trong lookup
+                    { $match: { status: req.query.status||"approve" } } // lọc flashcard bên trong lookup
                 ]
             }
         },
@@ -58,7 +58,7 @@ export const detailTopic = async (req: Request, res: Response) => {
     //   ...topic?.toObject(), // toObject() để chỉ lấy ra object trong topic nếu không để thì nó sẽ trải cả những property "ngầm" của document ($__, $isNew, _doc…), nên object bị lộn xộn
     //   countFlashcard: dataFlashCard.length
     // };
-    return res.status(201).json({
+    return res.status(200).json({
         message: "Load data successfully",
         data: dataTopic,
     });

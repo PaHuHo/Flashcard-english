@@ -54,75 +54,78 @@ function HomePage() {
   };
   return (
     <>
-      <ElectricBorder
-        color="#ffcc23ff"
-        speed={0.3}
-        chaos={1.5}
-        thickness={3}
-        style={{ borderRadius: 16, margin: 10, padding: 15 }}
-      >
-        <div className="flex justify-between items-center">
-          <span className="text-[20px] font-semibold tracking-wide ml-[10px]">
-            Your Topic
-          </span>
-          <button
-            onClick={() => {
-              setOpenForm(!openForm);
-              setCurrentStep(1);
-            }}
-            type="button"
-            className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 outline-pink-500 px-4 py-2 text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-[0.98] transition m-[10px] cursor-pointer"
-          >
-            <i className="fa-solid fa-plus"></i> New topic
-          </button>
-        </div>
-        {userTopics?.length>0?(<div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
-         
-          {userTopics?.map((topic: any) => (
-            <TopicCard
-              id={topic._id}
-              name={topic.name}
-              description={topic.description}
-              totalCard={topic.flashcardCount}
-              username={topic.user_id.username || ""}
-            ></TopicCard>
-          ))}
-        </div>):(<EmptyData
-            title="Empty Flashcard"
-            showButton={false}
-          ></EmptyData>)}
-        
-      </ElectricBorder>
+      <div className="mb-[40px] m-[10px]">
+        <ElectricBorder
+          color="#ffcc23ff"
+          speed={0.3}
+          chaos={1.5}
+          thickness={3}
+          style={{ borderRadius: 16, padding: 15 }}
+        >
+          <div className="flex justify-between items-center">
+            <span className="text-[20px] font-semibold tracking-wide ml-[10px]">
+              Your Topic
+            </span>
+            <button
+              onClick={() => {
+                setOpenForm(!openForm);
+                setCurrentStep(1);
+              }}
+              type="button"
+              className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 outline-pink-500 px-4 py-2 text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-[0.98] transition m-[10px] cursor-pointer"
+            >
+              <i className="fa-solid fa-plus"></i> New topic
+            </button>
+          </div>
+          {userTopics?.length > 0 ? (
+            <div className="p-[10px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-stretch">
+              {userTopics?.map((topic: any) => (
+                <TopicCard
+                  id={topic._id}
+                  name={topic.name}
+                  description={topic.description}
+                  totalCard={topic.flashcardCount}
+                  username={topic.user_id.username || ""}
+                ></TopicCard>
+              ))}
+            </div>
+          ) : (
+            <EmptyData title="Empty Topic" showButton={false}></EmptyData>
+          )}
+        </ElectricBorder>
+      </div>
 
-      <ElectricBorder
-        color="#09a5ffff"
-        style={{ borderRadius: 16, margin: 10, padding: 15 }}
-      >
-        <div>
-          <span className="text-[20px] font-semibold tracking-wide ml-[10px]">
-            Topic
-          </span>
-          {allTopics?.length>0?(<div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
-            {allTopics?.map((topic: any) => (
-              <TopicCard
-                id={topic._id}
-                name={topic.name}
-                description={topic.description}
-                totalCard={topic.flashcardCount}
-                username={topic.user_id.username || ""}
-              ></TopicCard>
-            ))}
-          </div>):(<EmptyData
-            title="Empty Flashcard"
-            showButton={false}
-          ></EmptyData>)}
-          
-        </div>
-      </ElectricBorder>
+      <div className="m-[10px]">
+        <ElectricBorder
+          color="#09a5ffff"
+          style={{ borderRadius: 16, padding: 15 }}
+        >
+          <div>
+            <span className="text-[20px] font-semibold tracking-wide ml-[10px]">
+              Topic
+            </span>
+            {allTopics?.length > 0 ? (
+              <div className="p-[10px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-stretch">
+                {allTopics?.map((topic: any) => (
+                  <TopicCard
+                    id={topic._id}
+                    name={topic.name}
+                    description={topic.description}
+                    totalCard={topic.flashcardCount}
+                    username={topic.user_id.username || ""}
+                  ></TopicCard>
+                ))}
+              </div>
+            ) : (
+              <EmptyData title="Empty Topic" showButton={false}></EmptyData>
+            )}
+          </div>
+        </ElectricBorder>
+      </div>
 
       {/* Loading */}
       <div
-        className={`fixed inset-0 flex items-center justify-center size-auto  ${
+        className={`fixed inset-0 flex items-center justify-center ${
           loadingAll ? "" : "hidden"
         }`}
       >
@@ -154,7 +157,7 @@ function HomePage() {
       </div>
       {/* Modal popup form */}
       <div
-        className={`fixed inset-0 flex items-center justify-center size-auto  ${
+        className={`fixed inset-0 flex items-center justify-center ${
           openForm ? "" : "hidden"
         }`}
       >

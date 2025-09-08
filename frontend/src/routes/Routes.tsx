@@ -13,7 +13,7 @@ function AppRoutes() {
             <Layout />
           </ProtectedRoute>}>
         <Route index element={<HomePage />} />
-        <Route path="topic/:id" element={<TopicPage />} />
+        <Route path="topic/detail/:id" element={<TopicPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<NoFoundPage />} />

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { register, login } from '../controllers/auth.controller';
 import { showTopic, detailTopic, createTopic, updateTopic, removeTopic } from '../controllers/topic.controller';
-import { showFlashcard, createFlashcard } from '../controllers/flashcard.controller'
+import { showFlashcard, createFlashcard,updateFlashcard,deleteFlashcard } from '../controllers/flashcard.controller'
 import { verifyToken } from '../middleware/auth.middleware'
 const router = Router();
 
@@ -24,8 +24,8 @@ router.post('/topic/delete', verifyToken, removeTopic);
 //API CRUD Flashcard
 router.get('/flashcard/show', verifyToken, showFlashcard);
 router.post('/flashcard/create', verifyToken, createFlashcard);
-router.post('/flashcard/update', verifyToken, updateTopic);
-router.post('/flashcard/delete', verifyToken, removeTopic);
+router.post('/flashcard/update', verifyToken, updateFlashcard);
+router.post('/flashcard/delete', verifyToken, deleteFlashcard);
 
 
 export default router;

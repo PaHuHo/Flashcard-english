@@ -6,21 +6,21 @@ import { useState } from "react";
 import FlashCard from "../components/FlashCard/FlashCard";
 import ElectricBorder from "../components/ElectricBorder/ElectricBorder";
 import EmptyData from "../components/EmptyData/EmptyData";
+import FlashcardSwitch from "../components/SwitchButton/FlashcardSwitch";
 import Stepper, { Step } from "../components/Stepper/Stepper";
 import { useForm } from "react-hook-form";
 import URL_API from "../stores/api";
 import { toast } from "react-toastify";
 
 type Topic = {
+  _id:string;
   name: string;
   description: string;
   visibility: string;
-  user_id: [
-    {
-      id: string;
+  user_id: {
+      _id: string;
       username: string;
-    }
-  ];
+  }
   isActive: number;
 };
 
@@ -31,19 +31,20 @@ type FlashCardForm = {
 function TopicDetail() {
   const { user } = useAuthStore();
   const { id } = useParams(); //userParams là hàm dùng để lấy giá trị được cài trong route
-  const { result: topic } = useFetchData<any>(`/topic/detail?topic_id=${id}`);
-  const { result: flashcard, fetchData: fetchFlashcard } = useFetchData<any>(
+  const { result: topic } = useFetchData<Topic>(`/topic/detail?topic_id=${id}`);
+  const { result: flashcard, fetchData: fetchFlashcard, loading } = useFetchData<any>(
     "/flashcard/show",
-    { params: { topic_id: id } }
+    { topic_id: id }
   );
   const [openForm, setOpenForm] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
+  const [currentStatus, setCurrentStatus] = useState("approve");
   const flashcardForm = useForm({
     mode: "onChange",
   });
+
   const handleFinalSubmit = async (data: FlashCardForm) => {
-    
     let finalData: any = {
       ...data,
       user_id: user?.id,
@@ -56,8 +57,8 @@ function TopicDetail() {
       };
     }
 
-    const res=await URL_API.post("/flashcard/create",finalData)
-    if(res.status==201){
+    const res = await URL_API.post("/flashcard/create", finalData);
+    if (res.status == 201) {
       toast.success(res.data.message);
     }
     fetchFlashcard();
@@ -69,7 +70,7 @@ function TopicDetail() {
   return (
     <>
       <div className="p-6  space-y-6">
-        {/* Header */}
+        {/* Topic */}
         <ElectricBorder color="#60efff">
           <div className="rounded-2xl border p-6 shadow-md flex justify-between">
             <div>
@@ -85,6 +86,12 @@ function TopicDetail() {
                   by {topic?.user_id.username}
                 </span>
               </div>
+              <div className="mt-[10px]"><FlashcardSwitch
+                onChange={(currentStatus) => {
+                  setCurrentStatus(currentStatus)
+                  fetchFlashcard({ topic_id: id, status: currentStatus });
+                }}
+              ></FlashcardSwitch></div>
             </div>
             <div className="flex justify-center items-center">
               <button
@@ -144,13 +151,15 @@ function TopicDetail() {
         {/* Flashcards list */}
         {flashcard?.count > 0 ? (
           <div className="p-[20px] grid grid-cols-5 gap-8 justify-items-stretch">
-            {flashcard?.data.map((fc:any) => (
-              <FlashCard front={fc.front} back={fc.back}></FlashCard>
+            {flashcard?.data.map((fc: any) => (
+              <FlashCard id={fc._id} front={fc.front} back={fc.back} user={fc.user_id.username} status={fc.status} onLoadData={()=>{
+                fetchFlashcard({ topic_id: id, status: currentStatus });
+              }}></FlashCard>
             ))}
           </div>
         ) : (
           <EmptyData
-            title="This Topic Haven't Flashcard"
+            title="No Flashcard Here"
             titleBtn="Add Flashcard"
             onBtn={() => {
               setOpenForm(!openForm);
@@ -159,6 +168,39 @@ function TopicDetail() {
           ></EmptyData>
         )}
       </div>
+
+        <div
+        className={`fixed inset-0 flex items-center justify-center ${
+          loading ? "" : "hidden"
+        }`}
+      >
+        <div className="absolute inset-0 bg-black/30"></div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100"
+          height="100"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="1"
+            d="M12 6.99998C9.1747 6.99987 6.99997 9.24998 7 12C7.00003 14.55 9.02119 17 12 17C14.7712 17 17 14.75 17 12"
+          >
+            <animateTransform
+              attributeName="transform"
+              attributeType="XML"
+              dur="0.588s"
+              from="0,12,12"
+              repeatCount="indefinite"
+              to="360,12,12"
+              type="rotate"
+            />
+          </path>
+        </svg>
+      </div>
+
 
       {/* Model add flashcard */}
       <div
