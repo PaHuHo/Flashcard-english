@@ -5,7 +5,6 @@ import User from '../models/user.model';
 
 export const login = async (req: Request, res: Response) => {
   const jwt_secret = process.env.JWT_SECRET as string;
-  console.log("JWT_SECRET =", jwt_secret);
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });

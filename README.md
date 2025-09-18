@@ -2,4 +2,6 @@
 
 #2: Run 'npm install' on root project
 
-#3: Run 'npm run dev'
+#3: cp backend/.env.example backend/.env
+
+#4: Run 'npm run dev'
