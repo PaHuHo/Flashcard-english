@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/auth";
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 export default function ProtectedRoute({ children }: Props) {

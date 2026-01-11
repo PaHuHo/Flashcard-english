@@ -1,11 +1,10 @@
-import React, {
+import React,{
   useState,
   Children,
   useRef,
   useLayoutEffect,
-  HTMLAttributes,
-  ReactNode,
 } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Variants } from "motion/react";
 

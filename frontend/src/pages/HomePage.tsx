@@ -21,7 +21,7 @@ function HomePage() {
   const [openForm, setOpenForm] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(0);
-  const topicDataForm = useForm({
+  const topicDataForm = useForm<TopicForm>({
     mode: "onChange",
   });
 

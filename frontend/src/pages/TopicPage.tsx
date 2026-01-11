@@ -40,7 +40,7 @@ function TopicDetail() {
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
   const [currentStatus, setCurrentStatus] = useState("approve");
-  const flashcardForm = useForm({
+  const flashcardForm = useForm<FlashCardForm>({
     mode: "onChange",
   });
 
